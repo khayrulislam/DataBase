@@ -92,5 +92,12 @@ public class SeparateTraningAndTestData {
 	public double getNonSpamPobablility() {
 		return (double)totalNonSpam/ (double)traningSize;
 	}
+	public double getTotalSpam() {
+		return (double)totalSpam;
+	}
+
+	public double getTotalNonSpam() {
+		return (double) totalNonSpam;
+	}
 	
 }

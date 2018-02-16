@@ -7,7 +7,7 @@ public class SpamTesting {
 
 	private double [][] testData;
 	private double [][] traningData;
-	private double featureSpamProbability,featureNonSpamProbability,spam=1,nonSpam=1,spamProbability,nonSpamPobablility;
+	private double featureSpamProbability,featureNonSpamProbability,spam=1,nonSpam=1,spamProbability,nonSpamPobablility,totalSpam,totalNonSpam;
 	
 	ArrayList<Integer> testAsnwer = new ArrayList<Integer>();
 	ArrayList<Integer> originalAsnwer = new ArrayList<Integer>();
@@ -30,6 +30,8 @@ public class SpamTesting {
 		traningData = s.getTraningData();
 		spamProbability = s.getSpamProbability();
 		nonSpamPobablility = s.getNonSpamPobablility();
+		totalSpam = s.getTotalSpam();
+		totalNonSpam =s.getTotalNonSpam();
 	}
 	
 	public double probabilityWithinARange(double emailtype,int pos,double frequency){
@@ -67,8 +69,8 @@ public class SpamTesting {
 			for(int j=1;j<testData[i].length;j++) {
 				
 				if(testData[i][j]!=0) {
-					featureSpamProbability  = probabilityForFeature(1,j,testData[i][j]);
-					featureNonSpamProbability = probabilityForFeature(0,j,testData[i][j]);
+					featureSpamProbability  = probabilityForFeature(1,j,testData[i][j]) / totalSpam;
+					featureNonSpamProbability = probabilityForFeature(0,j,testData[i][j]) / totalNonSpam;
 					
 					//System.out.println(featureSpamProbability+"       /       "+featureNonSpamProbability);
 					if(featureSpamProbability!=0 || featureNonSpamProbability!=0) {
@@ -90,5 +92,6 @@ public class SpamTesting {
 		}
 		
 	}
+
 	
 }
