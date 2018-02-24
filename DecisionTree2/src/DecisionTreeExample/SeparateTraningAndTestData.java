@@ -24,15 +24,17 @@ public class SeparateTraningAndTestData {
 		Scanner sc = new Scanner(new File(path));
 		while(sc.hasNextLine()){
 			line = sc.next();
+			System.out.println(i);
 			totalDataString.add(line);
 			i++;
 		}
 		totalFileSize = i;
 		testSize = (int) (totalFileSize * 0.1);
 		///////////////
-		testSize = 0;
+		//testSize = 0;
 		traningSize = totalFileSize - testSize;
 		storeInArray();
+		System.out.println(totalFileSize+"    "+traningSize+"      "+testSize);
 		sc.close();
 	}
 	
@@ -43,7 +45,7 @@ public class SeparateTraningAndTestData {
 	}
 	
 	private String []splitRowData(String line) {
-		String [] row = line.split(",");
+		String [] row = line.split(";");
 		String [] rowData = new String[row.length+1];
 		for(int i=0;i<row.length;i++) {
 			rowData[i+1] = row[i];

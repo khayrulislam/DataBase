@@ -105,17 +105,15 @@ public class BuildDecisionTree {
 			if(answerList.get(i).equals("yes")) totalYesCount++;
 			else if (answerList.get(i).equals("no")) totalNoCount++;
 		}
-		if(totalYesCount==0 || totalNoCount==0) return -1;
+		if(totalYesCount==0 || totalNoCount==0)
+			return -1;		
 		for(int i=0;i<columnValueList.size()-1;i++) {
-			
 			entropy =  calculateEntropyForAcolumn(answerList, columnValueList.get(i), uniqueValueOfColumn.get(i) ,totalYesCount,totalNoCount ) ;
-			//if (entropy==0.0) return -1;
 			if(entropy<min) {
 				min = entropy;
 				index = i;
 			}			
 		}
-		//System.out.println(entropy+"       "+index);
 		return index;	
 	}
 	
@@ -123,27 +121,34 @@ public class BuildDecisionTree {
 	private TreeNode TreeCreation(TreeNode currentNode, ArrayList< ArrayList< String > > columnValueList, ArrayList< HashMap<String, Boolean> > uniqueValueOfColumn) {
 		
 		int splitIndex = calculateEntropy(columnValueList,uniqueValueOfColumn);
-		//System.out.println(splitIndex);
+		
 		if(columnValueList.isEmpty())
 			return null; 
 		if(splitIndex==-1) {
 			currentNode.isLeaf = true;
-			currentNode.answer = columnValueList.get(0).get(0);
+			currentNode.answer = columnValueList.get(columnValueList.size()-1).get(0);
+			//System.out.println(currentNode.answer);
 			return currentNode;
 		}
 		
 		else {
 			currentNode.index = splitIndex;
+			
 			HashMap<String, Boolean> splitingUnique = uniqueValueOfColumn.get(splitIndex);
-			System.out.println(splitingUnique.toString());
-			TreeNode next = new TreeNode();
+			//System.out.println(splitingUnique.toString());
 			
 			for(String key : splitingUnique.keySet()) {
 				//System.out.println(splitIndex);
+				//System.out.println(key+">>>>>>>>>>>>>>>>>>");
+				TreeNode next = new TreeNode();
 				ArrayList< ArrayList< String > > nextColumnList = getNextColumnList(splitIndex,key,columnValueList);
 				ArrayList< HashMap<String, Boolean> > nextUniqueValueOfColumn = seperateUniqueValueFromCloumn(nextColumnList);
 				
-				currentNode.child.put(key, TreeCreation(next, nextColumnList, nextUniqueValueOfColumn));
+				TreeNode temp = null;
+				temp=TreeCreation(next, nextColumnList, nextUniqueValueOfColumn);
+				//System.out.println(key+"========"+temp.answer+"--------"+temp.child.size());
+				currentNode.child.put(key, temp);
+				
 			}
 			 
 		}
