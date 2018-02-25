@@ -1,7 +1,7 @@
 package DecisionTreeExample;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashMap;import java.util.concurrent.CountDownLatch;
 
 public class BuildDecisionTree {
 
@@ -83,8 +83,8 @@ public class BuildDecisionTree {
 		
 		for(int i=0;i<column.size();i++) {
 			index = uniqueValue.get(column.get(i));
-			if (answer.get(i).equals("yes")) yesNoCount[index][0]++;
-			else if (answer.get(i).equals("no")) yesNoCount[index][1]++;
+			if (answer.get(i).equals("won")) yesNoCount[index][0]++;
+			else if (answer.get(i).equals("nowin")) yesNoCount[index][1]++;
 		}
 		
 		for(int i=0;i<uniqueValue.size();i++) {
@@ -102,13 +102,15 @@ public class BuildDecisionTree {
 		double totalNoCount=0,totalYesCount=0,min=1,entropy = 0;
 		ArrayList<String> answerList = columnValueList.get(columnValueList.size()-1);
 		for(int i=0;i<answerList.size();i++) {
-			if(answerList.get(i).equals("yes")) totalYesCount++;
-			else if (answerList.get(i).equals("no")) totalNoCount++;
+			if(answerList.get(i).equals("won")) totalYesCount++;
+			else if (answerList.get(i).equals("nowin")) totalNoCount++;
 		}
+		
 		if(totalYesCount==0 || totalNoCount==0)
 			return -1;		
 		for(int i=0;i<columnValueList.size()-1;i++) {
 			entropy =  calculateEntropyForAcolumn(answerList, columnValueList.get(i), uniqueValueOfColumn.get(i) ,totalYesCount,totalNoCount ) ;
+			//System.out.println(entropy);
 			if(entropy<min) {
 				min = entropy;
 				index = i;
@@ -121,9 +123,17 @@ public class BuildDecisionTree {
 	private TreeNode TreeCreation(TreeNode currentNode, ArrayList< ArrayList< String > > columnValueList, ArrayList< HashMap<String, Boolean> > uniqueValueOfColumn) {
 		
 		int splitIndex = calculateEntropy(columnValueList,uniqueValueOfColumn);
+		System.out.println("spliting index ----------------------- "+splitIndex);
+		//if(columnValueList.size() == 2)
+			//System.out.println(columnValueList.toString());
 		
-		if(columnValueList.isEmpty())
-			return null; 
+		if(columnValueList.size() == 1) {
+			System.out.println(columnValueList.get(0).toString());
+			
+			currentNode.answer = "hi ans";
+			return currentNode; 
+		}
+			
 		if(splitIndex==-1) {
 			currentNode.isLeaf = true;
 			currentNode.answer = columnValueList.get(columnValueList.size()-1).get(0);

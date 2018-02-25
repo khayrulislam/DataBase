@@ -18,15 +18,15 @@ public class Controller {
 		
 		BuildDecisionTree bt = new BuildDecisionTree(traningData);
 		TreeNode root = bt.getRoot();
-		modifyTestData();
+		/*modifyTestData();
 			
 		for(int i=0;i<modifiedTestData.size();i++) {
 			System.out.println("orginal answer    "+testData[i+1][testData[i+1].length-1]);
 			System.out.println("my answer    "+traversTree(root, modifiedTestData.get(i) ));
-		}
+		}*/
 		//print(root);
 		
-		//printTree(root);
+		printTree(root);
 		
 	}
 	
@@ -64,12 +64,17 @@ public class Controller {
 
 	public String traversTree(TreeNode current , ArrayList<String> test) {
 				
+		
+		//System.out.println(current.index+"   "+current.child.size()+"       "+current.child.toString()+"      "+test.size());
 		int index = current.index;	
 		String str = test.get(index);
 		test.remove(str);
 		//System.out.println(test.toString());
 		
 		if(current.child.size()==0) return current.answer;
+		if(current.child.get(str)==null) {
+			System.out.println("                                                             "+current.answer);
+			return current.answer;}
 		return traversTree(current.child.get(str), test);
 		
 	}

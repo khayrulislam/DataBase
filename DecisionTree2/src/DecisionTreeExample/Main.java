@@ -6,7 +6,7 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		Controller c = new Controller();
-		c.getInputData("data2.txt");
+		c.getInputData("0dt.txt");
 	}
 	
 }
