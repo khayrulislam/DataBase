@@ -13,37 +13,57 @@ public class Controller {
 	
 	public void getInputData(String path) throws IOException {
 		SeparateTraningAndTestData s = new SeparateTraningAndTestData(path);
-		testData = s.getTestData();
-		traningData = s.getTraningData();
 		
-		BuildDecisionTree bt = new BuildDecisionTree(traningData);
-		TreeNode root = bt.getRoot();
-		/*modifyTestData();
+		
+		for(int j=0;j<10;j++) {
 			
-		for(int i=0;i<modifiedTestData.size();i++) {
-			System.out.println("orginal answer    "+testData[i+1][testData[i+1].length-1]);
-			System.out.println("my answer    "+traversTree(root, modifiedTestData.get(i) ));
-		}*/
-		//print(root);
-		
-		printTree(root);
+			testData = s.getTestData();
+			traningData = s.getTraningData();
+			
+			BuildDecisionTree bt = new BuildDecisionTree(traningData);
+			TreeNode root = bt.getRoot();
+			modifyTestData();
+			
+			
+			
+			ArrayList<String> orginalAnswer = new ArrayList<String>();
+			ArrayList<String> testAnswer = new ArrayList<String>();
+			for(int i=0;i<modifiedTestData.size();i++) {
+				orginalAnswer.add(testData[i+1][testData[i+1].length-1]);
+				testAnswer.add(  traversTree(root, modifiedTestData.get(i) )  );
+			}
+			new ResultEvaluation(testAnswer, orginalAnswer);
+			
+		}
 		
 	}
 	
 	
 	public void modifyTestData() {
-		System.out.println(testData.length);
+		modifiedTestData.clear();
 		for(int i=1;i<testData.length;i++) {
 			ArrayList<String> temp = new ArrayList<String>();
 			for(int j=1;j<testData[i].length-1;j++)
-				temp.add(testData[i][j]);
-			//System.out.println(testData[i][testData[i].length-1]);
-			
+				temp.add(testData[i][j]);	
 			modifiedTestData.add(temp);
 		}
-		//System.out.println(modifiedTestData.toString());
+	}
+
+
+	public String traversTree(TreeNode current , ArrayList<String> test) {
+		int index = current.index;	
+		String str = test.get(index);
+		test.remove(str);
+		if(current.child.size()==0) return current.answer;
+		if(current.child.get(str)==null) {return "no";}
+		return traversTree(current.child.get(str), test);
+		
 	}
 	
+}
+/*
+ * 
+ 	
 	public void printTree(TreeNode current) {
 		
 		if(current.child.size()>0) {
@@ -61,26 +81,4 @@ public class Controller {
 		
 	}
 	
-
-	public String traversTree(TreeNode current , ArrayList<String> test) {
-				
-		
-		//System.out.println(current.index+"   "+current.child.size()+"       "+current.child.toString()+"      "+test.size());
-		int index = current.index;	
-		String str = test.get(index);
-		test.remove(str);
-		//System.out.println(test.toString());
-		
-		if(current.child.size()==0) return current.answer;
-		if(current.child.get(str)==null) {
-			System.out.println("                                                             "+current.answer);
-			return current.answer;}
-		return traversTree(current.child.get(str), test);
-		
-	}
-	
-
-	
-	
-	
-}
+ * */

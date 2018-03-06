@@ -83,8 +83,8 @@ public class BuildDecisionTree {
 		
 		for(int i=0;i<column.size();i++) {
 			index = uniqueValue.get(column.get(i));
-			if (answer.get(i).equals("won")) yesNoCount[index][0]++;
-			else if (answer.get(i).equals("nowin")) yesNoCount[index][1]++;
+			if (answer.get(i).equals("yes")) yesNoCount[index][0]++;
+			else if (answer.get(i).equals("no")) yesNoCount[index][1]++;
 		}
 		
 		for(int i=0;i<uniqueValue.size();i++) {
@@ -101,9 +101,10 @@ public class BuildDecisionTree {
 		int index = -1;
 		double totalNoCount=0,totalYesCount=0,min=1,entropy = 0;
 		ArrayList<String> answerList = columnValueList.get(columnValueList.size()-1);
+		
 		for(int i=0;i<answerList.size();i++) {
-			if(answerList.get(i).equals("won")) totalYesCount++;
-			else if (answerList.get(i).equals("nowin")) totalNoCount++;
+			if(answerList.get(i).equals("yes")) totalYesCount++;
+			else if (answerList.get(i).equals("no")) totalNoCount++;
 		}
 		
 		if(totalYesCount==0 || totalNoCount==0)
@@ -123,10 +124,6 @@ public class BuildDecisionTree {
 	private TreeNode TreeCreation(TreeNode currentNode, ArrayList< ArrayList< String > > columnValueList, ArrayList< HashMap<String, Boolean> > uniqueValueOfColumn) {
 		
 		int splitIndex = calculateEntropy(columnValueList,uniqueValueOfColumn);
-		System.out.println("spliting index ----------------------- "+splitIndex);
-		//if(columnValueList.size() == 2)
-			//System.out.println(columnValueList.toString());
-		
 		if(columnValueList.size() == 1) {
 			System.out.println(columnValueList.get(0).toString());
 			
@@ -137,7 +134,7 @@ public class BuildDecisionTree {
 		if(splitIndex==-1) {
 			currentNode.isLeaf = true;
 			currentNode.answer = columnValueList.get(columnValueList.size()-1).get(0);
-			//System.out.println(currentNode.answer);
+			
 			return currentNode;
 		}
 		
@@ -145,18 +142,16 @@ public class BuildDecisionTree {
 			currentNode.index = splitIndex;
 			
 			HashMap<String, Boolean> splitingUnique = uniqueValueOfColumn.get(splitIndex);
-			//System.out.println(splitingUnique.toString());
 			
 			for(String key : splitingUnique.keySet()) {
-				//System.out.println(splitIndex);
-				//System.out.println(key+">>>>>>>>>>>>>>>>>>");
+				
 				TreeNode next = new TreeNode();
 				ArrayList< ArrayList< String > > nextColumnList = getNextColumnList(splitIndex,key,columnValueList);
 				ArrayList< HashMap<String, Boolean> > nextUniqueValueOfColumn = seperateUniqueValueFromCloumn(nextColumnList);
 				
 				TreeNode temp = null;
 				temp=TreeCreation(next, nextColumnList, nextUniqueValueOfColumn);
-				//System.out.println(key+"========"+temp.answer+"--------"+temp.child.size());
+				
 				currentNode.child.put(key, temp);
 				
 			}
@@ -192,7 +187,7 @@ public class BuildDecisionTree {
 						temp.add(temp2.get(j));
 				}
 					
-				//System.out.println(temp);
+				
 				newColumnValueList.add(temp);
 			}
 			

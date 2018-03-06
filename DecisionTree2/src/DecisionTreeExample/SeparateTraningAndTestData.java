@@ -31,7 +31,7 @@ public class SeparateTraningAndTestData {
 		totalFileSize = i;
 		testSize = (int) (totalFileSize * 0.1);
 		///////////////
-		testSize = 0;
+		//testSize = 0;
 		traningSize = totalFileSize - testSize;
 		storeInArray();
 		System.out.println(totalFileSize+"    "+traningSize+"      "+testSize);
